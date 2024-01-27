@@ -7,6 +7,15 @@ export default function TaskReducer(state, action
         case "deleteAllTask": {
             return state = [];
         }
+        case "isFav": {
+            return state.map(task => {
+                if (task.id === action.task.id) {
+                    return action.task;
+                } else {
+                    return task;
+                }
+            });
+        }
         default:
             break;
     }
