@@ -2,7 +2,7 @@ import React from "react";
 import Button from "./layouts/Button";
 import Input from "./layouts/Input";
 
-const TasksListHeader = ({ onOpenModal }) => {
+const TasksListHeader = ({ onOpenModal, onOpenConfirmModal }) => {
   return (
     <div className="items-center justify-between mb-14 sm:flex">
       <h2 className="text-2xl font-semibold max-sm:mb-4">Your Tasks</h2>
@@ -44,7 +44,9 @@ const TasksListHeader = ({ onOpenModal }) => {
         <Button className={"bg-blue-500"} onClick={onOpenModal}>
           Add Task
         </Button>
-        <Button className={"bg-red-500"}>Delete All</Button>
+        <Button className={"bg-red-500"} onClick={onOpenConfirmModal}>
+          Delete All
+        </Button>
       </div>
     </div>
   );

@@ -2,18 +2,29 @@ import React, { useState } from "react";
 import Container from "./layouts/Container";
 import TasksListHeader from "./TasksListHeader";
 import Modal from "./layouts/Modal";
+import ConfirmModal from "./layouts/ConfirmModal";
 const TasksList = () => {
   const [showModal, setModalShow] = useState(false);
+  const [showConfirmModal, setConfirmModalShow] = useState(false);
   const handleEdit = () => {
     setModalShow(true);
+  };
+  const handleDelete = () => {
+    setConfirmModalShow(true);
   };
   return (
     <section className="mb-20" id="tasks">
       {showModal && <Modal onClose={() => setModalShow(false)} />}
       <Container>
+        {showConfirmModal && (
+          <ConfirmModal onClose={() => setConfirmModalShow(false)} />
+        )}
         {/* Search Box Ends */}
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-          <TasksListHeader onOpenModal={() => setModalShow(true)} />
+          <TasksListHeader
+            onOpenModal={() => setModalShow(true)}
+            onOpenConfirmModal={() => setConfirmModalShow(true)}
+          />
           <div className="overflow-auto">
             <table className="overflow-auto table-fixed xl:w-full">
               <thead>
@@ -84,7 +95,12 @@ const TasksList = () => {
                   <td className="text-center">High</td>
                   <td>
                     <div className="flex items-center justify-center space-x-3">
-                      <button className="text-red-500">Delete</button>
+                      <button
+                        className="text-red-500"
+                        onClick={() => handleDelete()}
+                      >
+                        Delete
+                      </button>
                       <button
                         className="text-blue-500"
                         onClick={() => handleEdit()}
