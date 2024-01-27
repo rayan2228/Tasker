@@ -1,8 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
+import { useDispatch } from "../../contexts/TasksContext";
+import { Bounce, toast } from "react-toastify";
 
 const Modal = ({ onClose }) => {
+  const dispatch = useDispatch();
+  const [addTaskValues, setAddTaskValues] = useState({
+    title: "",
+    description: "",
+    tags: [],
+    priority: "",
+  });
+  const handleAddTaskValues = (e) => {
+    const { name, value } = e.target;
+    if (name === "tags") {
+      let allTags = value.replaceAll(" ", ",").split(",");
+      setAddTaskValues((prevValues) => ({ ...prevValues, tags: allTags }));
+    } else {
+      setAddTaskValues((prevValues) => ({ ...prevValues, [name]: value }));
+    }
+  };
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (
+      addTaskValues.title === "" ||
+      addTaskValues.description === "" ||
+      addTaskValues.tags.length === 0 ||
+      addTaskValues.priority === ""
+    ) {
+      toast.error("all fields are required", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } else {
+      dispatch({
+        type: "addTask",
+        title: addTaskValues.title,
+        description: addTaskValues.description,
+        tags: addTaskValues.tags,
+        priority: addTaskValues.priority,
+      });
+      setAddTaskValues({
+        title: "",
+        description: "",
+        tags: [],
+        priority: "",
+      });
+      toast.success("Task added successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+  };
   return (
     <div className="fixed top-0 left-0 z-[60] w-screen h-screen bg-[#191d266f]">
       <form className="mx-auto my-10 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11">
@@ -20,6 +85,9 @@ const Modal = ({ onClose }) => {
               name="title"
               id="title"
               required=""
+              onChange={handleAddTaskValues}
+              value={addTaskValues.title}
+              name={"title"}
             />
           </div>
           {/* description */}
@@ -31,7 +99,9 @@ const Modal = ({ onClose }) => {
               name="description"
               id="description"
               required=""
-              defaultValue={""}
+              onChange={handleAddTaskValues}
+              value={addTaskValues.description}
+              name={"description"}
             />
           </div>
           {/* input group */}
@@ -45,6 +115,9 @@ const Modal = ({ onClose }) => {
                 name="tags"
                 id="tags"
                 required=""
+                onChange={handleAddTaskValues}
+                value={addTaskValues.tags}
+                name={"tags"}
               />
             </div>
             {/* priority */}
@@ -55,6 +128,9 @@ const Modal = ({ onClose }) => {
                 name="priority"
                 id="priority"
                 required=""
+                onChange={handleAddTaskValues}
+                value={addTaskValues.priority}
+                name={"priority"}
               >
                 <option value="">Select Priority</option>
                 <option value="low">Low</option>
@@ -69,6 +145,7 @@ const Modal = ({ onClose }) => {
           <button
             type="submit"
             className="px-4 py-2 text-white transition-all bg-blue-600 rounded hover:opacity-80"
+            onClick={handleAddTask}
           >
             Create new Task
           </button>
