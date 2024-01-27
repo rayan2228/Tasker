@@ -1,23 +1,11 @@
-import React, { useState } from "react";
-import Modal from "./layouts/Modal";
-import ConfirmModal from "./layouts/ConfirmModal";
-import { useTasks } from "../contexts/TasksContext";
-const Tasks = () => {
+import React from "react";
+import { useDispatch, useTasks } from "../contexts/TasksContext";
+const Tasks = ({ onEdit, onDelete }) => {
   const allTasks = useTasks();
-  const [showModal, setModalShow] = useState(false);
-  const [showConfirmModal, setConfirmModalShow] = useState(false);
-  const handleEdit = () => {
-    setModalShow(true);
-  };
-  const handleDelete = () => {
-    setConfirmModalShow(true);
-  };
+  const dispatch = useDispatch();
+
   return (
     <>
-      {showModal && <Modal onClose={() => setModalShow(false)} />}
-      {showConfirmModal && (
-        <ConfirmModal onClose={() => setConfirmModalShow(false)} />
-      )}
       <div className="overflow-auto">
         <table className="overflow-auto table-fixed xl:w-full">
           <thead>
@@ -83,13 +71,13 @@ const Tasks = () => {
                   <div className="flex items-center justify-center space-x-3">
                     <button
                       className="text-red-500"
-                      onClick={() => handleDelete()}
+                      onClick={() => onDelete(task.id)}
                     >
                       Delete
                     </button>
                     <button
                       className="text-blue-500"
-                      onClick={() => handleEdit()}
+                      onClick={() => onEdit(task.id)}
                     >
                       Edit
                     </button>

@@ -7,9 +7,9 @@ export const TasksContext = createContext(null);
 export const TaskReducerContext = createContext(null);
 
 export default function TasksContextProvider({ children }) {
-  const [state, dispatch] = useReducer(TaskReducer, initialData);
+  const [tasks, dispatch] = useReducer(TaskReducer, initialData);
   return (
-    <TasksContext.Provider value={initialData}>
+    <TasksContext.Provider value={tasks}>
       <TaskReducerContext.Provider value={dispatch}>
         {children}
       </TaskReducerContext.Provider>
@@ -18,3 +18,4 @@ export default function TasksContextProvider({ children }) {
 }
 
 export const useTasks = () => useContext(TasksContext);
+export const useDispatch = () => useContext(TaskReducerContext);
