@@ -38,7 +38,7 @@ const Tasks = ({ onEdit, onDelete }) => {
                   <span
                     onClick={() =>
                       dispatch({
-                        type: "isFav",
+                        type: "changed",
                         task: {
                           ...task,
                           isFav: task.isFav ? false : true,
@@ -89,7 +89,7 @@ const Tasks = ({ onEdit, onDelete }) => {
                     </button>
                     <button
                       className="text-blue-500"
-                      onClick={() => onEdit(task.id)}
+                      onClick={() => onEdit(task)}
                     >
                       Edit
                     </button>

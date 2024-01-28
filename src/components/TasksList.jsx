@@ -6,14 +6,17 @@ import { useDispatch } from "../contexts/TasksContext";
 import Modal from "./layouts/Modal";
 import ConfirmModal from "./layouts/ConfirmModal";
 import Button from "./layouts/Button";
+import { toast, Bounce } from "react-toastify";
 const TasksList = () => {
   const [showModal, setModalShow] = useState(false);
   const [showConfirmModal, setConfirmModalShow] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
+  const [editTask, setEditTask] = useState(null);
   const [deleteAllTask, setDeleteAllTask] = useState(false);
   const dispatch = useDispatch();
-  const handleEdit = () => {
+  const handleEdit = (task) => {
     setModalShow(true);
+    setEditTask(task);
   };
   const handleDelete = (taskId) => {
     setConfirmModalShow(true);
@@ -22,7 +25,14 @@ const TasksList = () => {
   return (
     <section className="mb-20" id="tasks">
       <Container>
-        {showModal && <Modal onClose={() => setModalShow(false)} />}
+        {showModal && (
+          <Modal
+            onClose={() => {
+              setModalShow(false), setEditTask(null);
+            }}
+            editTask={editTask}
+          />
+        )}
         {showConfirmModal && (
           <ConfirmModal deleteAllTask={deleteAllTask}>
             {deleteAllTask ? (
@@ -33,6 +43,17 @@ const TasksList = () => {
                     type: "deleteAllTask",
                   }),
                     setConfirmModalShow(false);
+                  toast.success("All tasks deleted successfully", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                  });
                 }}
               >
                 Delete
@@ -46,6 +67,17 @@ const TasksList = () => {
                     deleteTaskId,
                   }),
                     setConfirmModalShow(false);
+                  toast.success("Task deleted successfully", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
+                  });
                 }}
               >
                 Delete

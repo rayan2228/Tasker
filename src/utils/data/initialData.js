@@ -9,7 +9,7 @@ export const initialData = [
     },
     {
         id: crypto.randomUUID(),
-        title: "API Data Synchronization with Python<",
+        title: "API Data Synchronization with Python",
         description: "Implement a Python solution to synchronize data between an API and a third- party database securely, optimizing data exchange.",
         tags: ["Data Synchronization", "Python", "API"],
         priority: "High",

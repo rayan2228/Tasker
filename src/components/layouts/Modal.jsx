@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
-import { useDispatch } from "../../contexts/TasksContext";
+import { useDispatch, useTasks } from "../../contexts/TasksContext";
 import { Bounce, toast } from "react-toastify";
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, editTask }) => {
+  const tasks = useTasks();
   const dispatch = useDispatch();
-  const [addTaskValues, setAddTaskValues] = useState({
-    title: "",
-    description: "",
-    tags: [],
-    priority: "",
-  });
+  const [addTaskValues, setAddTaskValues] = useState(
+    editTask || {
+      title: "",
+      description: "",
+      tags: [],
+      priority: "",
+    }
+  );
   const handleAddTaskValues = (e) => {
     const { name, value } = e.target;
     if (name === "tags") {
-      let allTags = value.replaceAll(" ", ",").split(",");
+      let allTags = value.split(",");
       setAddTaskValues((prevValues) => ({ ...prevValues, tags: allTags }));
     } else {
       setAddTaskValues((prevValues) => ({ ...prevValues, [name]: value }));
     }
   };
-
   const handleAddTask = (e) => {
     e.preventDefault();
     if (
@@ -56,6 +58,57 @@ const Modal = ({ onClose }) => {
         priority: "",
       });
       toast.success("Task added successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    }
+  };
+  const handleUpdateTask = (e) => {
+    e.preventDefault();
+    console.log(addTaskValues.tags.length);
+    if (
+      addTaskValues.title === "" ||
+      addTaskValues.description === "" ||
+      addTaskValues.tags.length === 0 ||
+      addTaskValues.priority === ""
+    ) {
+      toast.error("all fields are required", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+    } else {
+      dispatch({
+        type: "changed",
+        task: {
+          ...editTask,
+          title: addTaskValues.title,
+          description: addTaskValues.description,
+          tags: addTaskValues.tags,
+          priority: addTaskValues.priority,
+        },
+      });
+      setAddTaskValues({
+        title: "",
+        description: "",
+        tags: [],
+        priority: "",
+      });
+      onClose();
+      toast.success("Task updated successfully", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -116,7 +169,7 @@ const Modal = ({ onClose }) => {
                 id="tags"
                 required=""
                 onChange={handleAddTaskValues}
-                value={addTaskValues.tags}
+                value={[...addTaskValues.tags]}
                 name={"tags"}
               />
             </div>
@@ -133,22 +186,33 @@ const Modal = ({ onClose }) => {
                 name={"priority"}
               >
                 <option value="">Select Priority</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
             </div>
           </div>
         </div>
         {/* inputs ends */}
         <div className="flex justify-center mt-16 lg:mt-20 gap-x-5">
-          <button
-            type="submit"
-            className="px-4 py-2 text-white transition-all bg-blue-600 rounded hover:opacity-80"
-            onClick={handleAddTask}
-          >
-            Create new Task
-          </button>
+          {editTask ? (
+            <button
+              type="submit"
+              className="px-4 py-2 text-white transition-all bg-blue-600 rounded hover:opacity-80"
+              onClick={handleUpdateTask}
+            >
+              Update Task
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="px-4 py-2 text-white transition-all bg-blue-600 rounded hover:opacity-80"
+              onClick={handleAddTask}
+            >
+              Create new Task
+            </button>
+          )}
+
           <Button className={"bg-red-500"} onClick={onClose}>
             Close
           </Button>

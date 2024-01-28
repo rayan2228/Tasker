@@ -15,7 +15,7 @@ export default function TaskReducer(state, action
                 }
             ];
         }
-        case "isFav": {
+        case "changed": {
             return state.map(task => {
                 if (task.id === action.task.id) {
                     return action.task;
@@ -23,6 +23,14 @@ export default function TaskReducer(state, action
                     return task;
                 }
             });
+        }
+        case "search": {
+            return state.filter(task => task.title.toLowerCase().includes(action.searchValue.toLowerCase()))
+
+        }
+        case "clearSearch": {
+            return state = action.state
+
         }
         case "deleteTask": {
             return state.filter(task => task.id !== action.deleteTaskId);

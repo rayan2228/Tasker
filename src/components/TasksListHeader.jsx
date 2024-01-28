@@ -1,8 +1,24 @@
 import React from "react";
 import Button from "./layouts/Button";
 import Input from "./layouts/Input";
-
+import { useDispatch, useTasks } from "../contexts/TasksContext";
+import { initialData } from "../utils/data/initialData";
 const TasksListHeader = ({ onOpenModal, onOpenConfirmModal }) => {
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (e.target.value !== "") {
+      dispatch({
+        type: "search",
+        searchValue: e.target.value,
+      });
+    } else {
+      dispatch({
+        type: "clearSearch",
+        state: initialData,
+      });
+    }
+  };
   return (
     <div className="items-center justify-between mb-14 sm:flex">
       <h2 className="text-2xl font-semibold max-sm:mb-4">Your Tasks</h2>
@@ -16,10 +32,12 @@ const TasksListHeader = ({ onOpenModal, onOpenConfirmModal }) => {
                 className="z-20 block w-full px-4 py-2 pr-10 bg-gray-800 focus:outline-none"
                 placeholder="Search Task"
                 required=""
+                onChange={handleSearch}
               />
               <button
                 type="submit"
                 className="absolute top-0 h-full text-white right-2 rounded-e-lg md:right-4"
+                onClick={handleSearch}
               >
                 <svg
                   className="w-4 h-4"
