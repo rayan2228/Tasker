@@ -17,5 +17,11 @@ export default function TasksContextProvider({ children }) {
   );
 }
 
-export const useTasks = () => useContext(TasksContext);
+export const useTasks = () => {
+  let { data, searchedData, searchValue } = useContext(TasksContext);
+  if (searchValue) {
+    return searchedData;
+  }
+  return data;
+};
 export const useDispatch = () => useContext(TaskReducerContext);

@@ -1,23 +1,16 @@
 import React from "react";
 import Button from "./layouts/Button";
 import Input from "./layouts/Input";
-import { useDispatch, useTasks } from "../contexts/TasksContext";
+import { useDispatch } from "../contexts/TasksContext";
 import { initialData } from "../utils/data/initialData";
 const TasksListHeader = ({ onOpenModal, onOpenConfirmModal }) => {
   const dispatch = useDispatch();
   const handleSearch = (e) => {
     e.preventDefault();
-    if (e.target.value !== "") {
-      dispatch({
-        type: "search",
-        searchValue: e.target.value,
-      });
-    } else {
-      dispatch({
-        type: "clearSearch",
-        state: initialData,
-      });
-    }
+    dispatch({
+      type: "search",
+      searchValue: e.target.value,
+    });
   };
   return (
     <div className="items-center justify-between mb-14 sm:flex">
