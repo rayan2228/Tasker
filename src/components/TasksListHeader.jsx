@@ -1,8 +1,6 @@
-import React from "react";
 import Button from "./layouts/Button";
 import Input from "./layouts/Input";
 import { useDispatch } from "../contexts/TasksContext";
-import { initialData } from "../utils/data/initialData";
 const TasksListHeader = ({ onOpenModal, onOpenConfirmModal }) => {
   const dispatch = useDispatch();
   const handleSearch = (e) => {
