@@ -12,6 +12,9 @@ export default {
       colors: {
         clifford: "#da373d",
       },
+      fontFamily: {
+        workbanch: ["Workbench"]
+      }
     },
   }
 

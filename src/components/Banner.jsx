@@ -9,7 +9,7 @@ const Banner = () => {
           <div className="grid items-center gap-6 md:grid-cols-2">
             <div className="flex justify-center md:order-2">
               <img
-                className="max-md:w-full"
+                className="rounded-lg max-md:w-full"
                 src={frame}
                 width={326}
                 height={290}

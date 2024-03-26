@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../assets/lws-logo-en.svg";
 import Container from "./layouts/Container";
 const Navbar = () => {
   return (
@@ -7,9 +6,9 @@ const Navbar = () => {
       <Container>
         <div className="flex items-center justify-between mx-auto gap-x-6">
           {/* Logo */}
-          <a href="/">
-            <img className="h-[45px]" src={logo} alt="Lws" />
-          </a>
+          <h1 className="tracking-[10px] capitalize text-4xl font-workbanch">
+            rayan
+          </h1>
           {/* Logo Ends */}
         </div>
       </Container>
